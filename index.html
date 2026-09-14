@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>آزمایشگاه مجموعه‌ها — ریاضی پایه نهم درس اوّل</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f6fb;--bg2:#eef1f9;--card:#ffffff;
+  --ink:#1e2233;--ink2:#4a5169;--ink3:#8b93a8;
+  --primary:#5b6ee1;--primary-d:#4254c9;--primary-l:#eef1ff;
+  --accent:#7c5cf0;--violet:#8b5cf6;
+  --green:#22a06b;--green-l:#e6f7ef;
+  --red:#e0484f;--red-l:#fdecec;
+  --gold:#e0a020;--gold-l:#fdf6e3;
+  --line:#e3e7f2;
+  --shadow-s:0 1px 2px rgba(30,34,51,.05),0 2px 8px rgba(30,34,51,.05);
+  --shadow-m:0 4px 14px rgba(30,34,51,.08),0 2px 4px rgba(30,34,51,.04);
+  --shadow-l:0 12px 34px rgba(30,34,51,.12),0 4px 10px rgba(30,34,51,.06);
+  --r-s:10px;--r-m:16px;--r-l:22px;
+  --ff:"B Nazanin","Nazanin",Tahoma,sans-serif;
+  --ff-en:"Times New Roman",Times,serif;
+}
+html,body{height:100%}
+body{
+  font-family:var(--ff);font-size:1.15rem;
+  background:
+    radial-gradient(1100px 600px at 88% -10%, #e8ecff 0%, transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, #f0e9ff 0%, transparent 55%),
+    var(--bg);
+  color:var(--ink);line-height:2;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+button{font-family:var(--ff);cursor:pointer;border:none;background:none;color:inherit}
+input,textarea{font-family:var(--ff)}
+:focus-visible{outline:3px solid var(--primary);outline-offset:2px;border-radius:6px}
+.num{font-family:var(--ff-en);font-variant-numeric:tabular-nums;unicode-bidi:isolate;display:inline-block;letter-spacing:.3px;font-size:1.05em;direction:ltr}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+svg text{font-family:var(--ff);font-size:14px}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px 140px}
+.screen{display:none;animation:fade .45s ease}
+.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.85);opacity:0}60%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+@keyframes floatUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 0 0 rgba(91,110,225,.35)}50%{box-shadow:0 0 0 12px rgba(91,110,225,0)}}
+@keyframes dropIn{0%{transform:translateY(-14px) scale(.7);opacity:0}70%{transform:translateY(2px) scale(1.05)}100%{transform:none;opacity:1}}
+@keyframes bounceSm{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+.credit-bar{
+  max-width:1080px;
+  margin:0 auto;
+  padding:6px 18px 8px;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:right;
+  justify-content:right;
+  gap:10px;
+  font-size:.9rem;
+  color:var(--ink3);
+  border-top:1px dashed var(--line);
+}
+.credit-bar b{color:var(--primary-d);font-weight:700}
+.credit-bar .sep{color:#c8cfe8}
+
+@media(max-width:640px){
+  .credit-bar{font-size:.82rem;padding:5px 12px 7px;gap:6px}
+}
+
+.topbar{position:sticky;top:0;z-index:60;backdrop-filter:blur(14px);background:rgba(255,255,255,.78);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:1080px;margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.15rem}
+.brand .logo{width:38px;height:38px;border-radius:12px;flex:none;background:linear-gradient(135deg,var(--primary),var(--violet));display:grid;place-items:center;color:#fff;font-size:1.15rem;box-shadow:0 6px 14px rgba(91,110,225,.35);animation:bounceSm 3s ease-in-out infinite}
+.brand small{display:block;font-weight:400;font-size:.85rem;color:var(--ink3);line-height:1.4}
+.hud{margin-inline-start:auto;display:flex;align-items:center;gap:8px}
+.chip{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:999px;font-size:1rem;font-weight:700;box-shadow:var(--shadow-s);white-space:nowrap;transition:transform .2s}
+.chip.bump{animation:pop .35s ease}
+.chip.streak{border-color:#ffe0b8;background:linear-gradient(135deg,#fff9ef,#fff)}
+.chip.score{border-color:#d9defb;background:linear-gradient(135deg,#f4f6ff,#fff)}
+.chip .ico{font-size:1rem}
+.hud .chip span.val{color:var(--primary-d)}
+.chip.streak span.val{color:#d97a10}
+.prog-line{height:5px;background:var(--line);position:relative;overflow:hidden}
+.prog-line i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--primary),var(--violet));transition:width .6s cubic-bezier(.2,.9,.3,1);border-radius:0 4px 4px 0}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 26px;border-radius:14px;font-weight:700;font-size:1.1rem;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;box-shadow:0 8px 20px rgba(91,110,225,.32);transition:transform .16s ease,box-shadow .16s ease,filter .16s;min-height:48px;position:relative;overflow:hidden}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);background-size:200% 100%;opacity:0;transition:opacity .3s}
+.btn:hover::after{opacity:1;animation:shimmer 1.2s linear infinite}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(91,110,225,.42)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn.ghost{background:var(--card);color:var(--primary-d);border:1.5px solid #d6dcfb;box-shadow:var(--shadow-s)}
+.btn.ghost:hover{background:var(--primary-l);box-shadow:var(--shadow-m)}
+.btn.sm{padding:9px 16px;font-size:.95rem;min-height:40px;border-radius:11px}
+.btn.lg{padding:14px 34px;font-size:1.15rem;min-height:56px;border-radius:16px}
+.btn.success{background:linear-gradient(135deg,#1f9e68,#28b97c);box-shadow:0 8px 20px rgba(34,160,107,.3)}
+.btn[disabled]{opacity:.45;pointer-events:none;filter:grayscale(.4)}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-l);padding:26px;box-shadow:var(--shadow-m)}
+.card + .card{margin-top:18px}
+.card h2{font-size:1.5rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.card h2 .n{width:32px;height:32px;border-radius:10px;flex:none;background:var(--primary-l);color:var(--primary-d);display:grid;place-items:center;font-size:1rem;font-weight:700}
+.card p{color:var(--ink2);margin-bottom:10px;font-size:1.1rem}
+.card p:last-child{margin-bottom:0}
+.hint{background:var(--gold-l);border:1px solid #f3e2b8;border-inline-start:5px solid var(--gold);border-radius:var(--r-m);padding:14px 18px;margin:14px 0;font-size:1.05rem;color:#6b4e0e}
+.hint b{color:#8a6209}
+.teacher{background:linear-gradient(135deg,#eef4ff,#f7f2ff);border:1px dashed #c3ccf5;border-radius:var(--r-m);padding:14px 18px;margin:14px 0;display:flex;gap:12px;align-items:flex-start}
+.teacher .av{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;background:linear-gradient(135deg,var(--primary),var(--violet));color:#fff;font-size:1.1rem}
+.teacher .tx b{display:block;font-size:.95rem;color:var(--primary-d);margin-bottom:2px}
+.teacher .tx span{font-size:1.05rem;color:var(--ink2)}
+
+.hero{text-align:center;padding:40px 0 10px;animation:floatUp .6s ease both}
+.hero .badge{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 16px;font-size:.95rem;font-weight:700;color:var(--primary-d);box-shadow:var(--shadow-s);margin-bottom:18px}
+.hero h1{font-size:clamp(1.9rem,6vw,3rem);font-weight:700;letter-spacing:-.5px;background:linear-gradient(120deg,var(--primary-d),var(--violet) 55%,#c05cd6);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.5}
+.hero .sub{color:var(--ink2);font-size:clamp(1rem,2.6vw,1.2rem);margin-top:10px;font-weight:400}
+.hero-art{width:min(520px,92vw);margin:26px auto 8px;display:block}
+.hero .btn{margin-top:8px;animation:glowPulse 2.6s infinite}
+
+.path-grid{display:grid;gap:14px;margin-top:20px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.station{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r-m);padding:16px;display:flex;gap:12px;align-items:flex-start;box-shadow:var(--shadow-s);cursor:pointer;text-align:start;transition:transform .18s ease,box-shadow .18s ease,border-color .18s;position:relative;overflow:hidden}
+.station:hover{transform:translateY(-3px);box-shadow:var(--shadow-m);border-color:#cdd5f7}
+.station .st-ico{width:42px;height:42px;border-radius:12px;flex:none;display:grid;place-items:center;font-size:1.25rem;background:var(--primary-l);transition:background .2s}
+.station .st-tx{min-width:0}
+.station .st-tx b{display:block;font-size:1.05rem;font-weight:700;margin-bottom:2px}
+.station .st-tx small{color:var(--ink3);font-size:.88rem;display:block;line-height:1.5}
+.station .st-num{position:absolute;top:8px;inset-inline-start:8px;font-size:.78rem;font-weight:700;color:var(--ink3);background:var(--bg2);padding:2px 8px;border-radius:999px}
+.station.done{border-color:#b8e6cf;background:linear-gradient(180deg,#f4fdf8,#fff)}
+.station.done .st-ico{background:var(--green-l);color:var(--green)}
+.station .check{position:absolute;top:8px;inset-inline-end:8px;width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;display:none;place-items:center;font-size:.7rem;font-weight:700}
+.station.done .check{display:grid;animation:pop .35s ease}
+
+.navbar{position:fixed;bottom:0;left:0;right:0;z-index:60;backdrop-filter:blur(14px);background:rgba(255,255,255,.9);border-top:1px solid var(--line);padding:14px 16px calc(14px + env(safe-area-inset-bottom));box-shadow:0 -4px 20px rgba(30,34,51,.06)}
+.navbar-in{max-width:1080px;margin:0 auto;display:flex;gap:12px;align-items:center}
+.navbar .spacer{flex:1}
+.navbar .step-ind{font-size:1rem;font-weight:700;color:var(--ink2);background:var(--primary-l);padding:8px 16px;border-radius:999px;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis;max-width:40vw}
+.navbar .btn{min-height:52px;padding:12px 28px;font-size:1.08rem;border-radius:14px}
+.navbar .btn.lg{padding:14px 36px;font-size:1.15rem}
+.navbar .btn.ghost{min-height:52px}
+
+.opt-grid{display:grid;gap:12px;margin-top:16px;grid-template-columns:1fr 1fr}
+.opt{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r-m);padding:14px 18px;font-weight:700;font-size:1.05rem;text-align:center;transition:all .18s ease;box-shadow:var(--shadow-s)}
+.opt:hover{border-color:#c3ccf5;background:var(--primary-l);transform:translateY(-2px)}
+.opt.correct{background:var(--green-l);border-color:#8fd9b6;color:#0d6b41}
+.opt.wrong{background:var(--red-l);border-color:#f2b8ba;color:#a3242a;animation:shake .4s}
+.opt.reveal{background:var(--green-l);border-color:#8fd9b6;color:#0d6b41}
+.fb{margin-top:14px;border-radius:var(--r-m);padding:14px 18px;font-size:1.05rem;display:none;animation:floatUp .3s ease;border:1px solid transparent}
+.fb.show{display:block}
+.fb.ok{background:var(--green-l);border-color:#b8e6cf;color:#0d5c38}
+.fb.no{background:var(--red-l);border-color:#f4cdcf;color:#8f2026}
+.fb b{display:block;margin-bottom:3px}
+
+.member-lab{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.member-chip{width:62px;height:62px;border-radius:16px;display:grid;place-items:center;font-size:1.4rem;font-weight:700;background:var(--card);border:2px solid var(--line);box-shadow:var(--shadow-s);transition:all .2s ease}
+.member-chip:hover{transform:translateY(-3px);border-color:#c3ccf5}
+.member-chip.in{background:var(--green-l);border-color:#8fd9b6;color:#0d6b41;animation:pop .35s}
+.member-chip.out{background:var(--red-l);border-color:#f2b8ba;color:#a3242a}
+.member-out{margin-top:16px;padding:16px;border-radius:var(--r-m);background:var(--bg2);border:1px dashed #ccd3ea;text-align:center;font-size:1.2rem;font-weight:700;min-height:64px;display:grid;place-items:center;transition:background .3s}
+.member-out .big{font-size:1.9rem}
+.member-out.flash{animation:pop .4s ease}
+
+.drop-grid{display:grid;gap:14px;margin-top:16px;grid-template-columns:1fr 1fr}
+.dz{border:2.5px dashed #ccd3ea;border-radius:var(--r-m);padding:14px;min-height:130px;background:var(--bg2);transition:all .2s ease}
+.dz.over{border-color:var(--primary);background:var(--primary-l);transform:scale(1.02)}
+.dz.ok{border-color:#8fd9b6;background:var(--green-l);border-style:solid}
+.dz.bad{border-color:#f2b8ba;background:var(--red-l);border-style:solid}
+.dz h4{font-size:1rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.dz .items{display:flex;flex-wrap:wrap;gap:8px;min-height:44px}
+.drag{background:var(--card);border:1.5px solid var(--line);border-radius:11px;padding:9px 15px;font-weight:700;font-size:1rem;box-shadow:var(--shadow-s);cursor:grab;touch-action:none;user-select:none;transition:transform .15s,box-shadow .15s,border-color .15s}
+.drag:hover{transform:translateY(-2px);box-shadow:var(--shadow-m);border-color:#c3ccf5}
+.drag:active{cursor:grabbing}
+.drag.dragging{opacity:.35}
+.drag.correct{background:var(--green-l);border-color:#8fd9b6;color:#0d6b41}
+.drag.wrong{background:var(--red-l);border-color:#f2b8ba;color:#a3242a;animation:shake .4s}
+.drag.placed{cursor:default}
+.pool{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;min-height:54px;padding:12px;border-radius:var(--r-m);background:var(--bg2);border:1px solid var(--line);align-content:flex-start}
+
+.builder{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;align-items:center}
+.builder input{flex:1;min-width:150px;padding:13px 18px;border-radius:13px;border:1.5px solid var(--line);font-size:1.1rem;background:var(--card);transition:border-color .2s}
+.builder input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-l)}
+.set-display{margin-top:16px;padding:20px;border-radius:var(--r-m);text-align:center;background:linear-gradient(135deg,#f4f6ff,#f7f2ff);border:1px solid #dfe3fb;font-size:1.5rem;font-weight:700;min-height:80px;display:grid;place-items:center;word-break:break-word;transition:all .3s}
+.set-display.updated{animation:pop .35s ease}
+.set-meta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.set-meta .tag{padding:6px 14px;border-radius:999px;font-size:.95rem;font-weight:700;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow-s)}
+.set-meta .tag.g{background:var(--green-l);border-color:#b8e6cf;color:#0d6b41}
+.set-meta .tag.r{background:var(--gold-l);border-color:#f3e2b8;color:#8a6209}
+
+/* ============ VENN — three connected panels matching the reference ============ */
+.venn-box{
+  margin:22px auto 6px;
+  max-width:760px;
+  direction:ltr;
+  border:2.5px solid #5b6ee1;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 10px 28px rgba(91,110,225,.15);
+  background:#fff;
+}
+.venn-row{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+}
+.vb{
+  position:relative;
+  min-height:220px;
+  display:flex;flex-direction:column;
+  transition:filter .25s, background .25s;
+}
+.vb:hover{filter:brightness(1.02)}
+.vb.hot{filter:brightness(.95) saturate(1.15)}
+.vb + .vb{border-inline-start:1.5px solid rgba(91,110,225,.25)}
+.vb .vb-title{
+  text-align:center;
+  font-weight:700;
+  font-size:1.15rem;
+  padding:12px 6px;
+  border-bottom:1.5px dashed rgba(91,110,225,.35);
+  letter-spacing:.5px;
+}
+.vb .vb-items{
+  flex:1;
+  padding:12px 8px;
+  display:flex;flex-wrap:wrap;gap:6px;
+  align-content:flex-start;justify-content:center;
+  min-height:80px;
+}
+.vb .chip{
+  width:38px;height:38px;border-radius:11px;
+  background:#fff;display:grid;place-items:center;
+  font-weight:700;font-size:1.1rem;
+  font-family:var(--ff-en);
+  box-shadow:0 2px 6px rgba(30,34,51,.1);
+  border:1.5px solid;
+  cursor:pointer;
+  animation:dropIn .35s ease;
+  transition:transform .15s;
+}
+.vb .chip:hover{transform:translateY(-2px) scale(1.08)}
+
+/* A panel */
+.vb-a{
+  background:linear-gradient(180deg,#eef1ff 0%,#e3e8ff 100%);
+}
+.vb-a .vb-title{color:#3448b8}
+.vb-a .chip{border-color:#a8b4f0;color:#3448b8}
+
+/* B panel */
+.vb-b{
+  background:linear-gradient(180deg,#f3ecff 0%,#e8dcff 100%);
+}
+.vb-b .vb-title{color:#6d28d9}
+.vb-b .chip{border-color:#c4a8f0;color:#6d28d9}
+
+/* A∩B middle panel — hatch + blend */
+.vb-ab{
+  background:
+    repeating-linear-gradient(45deg, rgba(91,110,225,.13) 0 5px, transparent 5px 11px),
+    repeating-linear-gradient(-45deg, rgba(139,92,246,.13) 0 5px, transparent 5px 11px),
+    linear-gradient(180deg,#eae4ff 0%,#e0d7fc 100%);
+}
+.vb-ab .vb-title{color:#4c1d95}
+.vb-ab .chip{border-color:#a892e0;color:#4c1d95}
+
+.venn-hint{text-align:center;color:var(--ink3);font-size:.95rem;margin-top:10px}
+
+.empty-vis{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px;min-height:60px}
+.ev-item{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-weight:700;font-size:1.2rem;background:var(--card);border:2px solid var(--line);box-shadow:var(--shadow-s);transition:all .5s cubic-bezier(.2,.9,.3,1)}
+.ev-item.gone{opacity:0;transform:scale(0) rotate(40deg)}
+.empty-badge{margin:16px auto 0;width:130px;height:130px;border-radius:50%;border:3px dashed #c8cfe8;display:grid;place-items:center;font-size:2.6rem;font-weight:700;color:var(--ink3);background:var(--bg2);transition:all .5s}
+.empty-badge.lit{border-color:var(--primary);color:var(--primary-d);background:var(--primary-l);animation:pop .5s}
+
+.compare-tri{display:grid;gap:14px;grid-template-columns:repeat(3,1fr);margin-top:16px}
+.ct{border-radius:var(--r-m);padding:18px 12px;text-align:center;border:2px solid var(--line);background:var(--card);box-shadow:var(--shadow-s);transition:all .25s}
+.ct:hover{transform:translateY(-4px);box-shadow:var(--shadow-m)}
+.ct .sym{font-size:2rem;font-weight:700;line-height:1.2;direction:ltr}
+.ct .lbl{font-size:.95rem;color:var(--ink3);margin-top:6px;font-weight:700}
+.ct .cnt{font-size:1.6rem;font-weight:700;color:var(--primary-d);margin-top:4px}
+.ct.g{border-color:#b8e6cf;background:linear-gradient(180deg,#f4fdf8,#fff)}
+.ct.g .cnt{color:var(--green)}
+.ct.z{border-color:#f3e2b8;background:linear-gradient(180deg,#fffdf5,#fff)}
+.ct.z .cnt{color:var(--gold)}
+
+.lvl-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.lvl{flex:1;min-width:140px;border-radius:var(--r-m);padding:16px;border:1.5px solid var(--line);background:var(--card);box-shadow:var(--shadow-s);text-align:center;cursor:pointer;transition:all .18s}
+.lvl:hover{transform:translateY(-3px);border-color:#c3ccf5;box-shadow:var(--shadow-m)}
+.lvl.on{border-color:var(--primary);background:var(--primary-l);box-shadow:0 0 0 3px rgba(91,110,225,.12)}
+.lvl b{display:block;font-size:1.05rem;font-weight:700}
+.lvl small{color:var(--ink3);font-size:.9rem}
+.q-box{margin-top:18px;padding:20px;border-radius:var(--r-m);background:var(--bg2);border:1px solid var(--line)}
+.q-text{font-size:1.15rem;font-weight:700;margin-bottom:14px;line-height:2}
+.q-ans{display:grid;gap:10px}
+.q-ans .opt{text-align:start;font-weight:400}
+.score-panel{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+.score-panel .tag{padding:10px 20px;border-radius:14px;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow-s);font-weight:700}
+.score-panel .tag b{color:var(--primary-d);font-size:1.2rem}
+
+.badge-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin-top:16px}
+.bdg{border-radius:var(--r-m);padding:16px 12px;text-align:center;border:1.5px solid var(--line);background:var(--card);box-shadow:var(--shadow-s);opacity:.4;filter:grayscale(1);transition:all .3s}
+.bdg.on{opacity:1;filter:none;border-color:#f3e2b8;background:linear-gradient(180deg,#fffdf5,#fff);box-shadow:0 6px 16px rgba(224,160,32,.18)}
+.bdg .b-ico{font-size:1.8rem;margin-bottom:4px}
+.bdg b{display:block;font-size:.98rem;font-weight:700}
+.bdg small{color:var(--ink3);font-size:.85rem}
+
+.exam-q{border-radius:var(--r-m);padding:18px;margin-bottom:14px;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow-s);animation:floatUp .35s both}
+.exam-q .eq-head{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}
+.exam-q .eq-n{width:28px;height:28px;border-radius:9px;flex:none;display:grid;place-items:center;background:var(--primary-l);color:var(--primary-d);font-size:.9rem;font-weight:700}
+.exam-q .eq-t{font-weight:700;font-size:1.1rem;line-height:2}
+.exam-opts{display:grid;gap:9px}
+.exam-opts .opt{text-align:start;font-weight:400;padding:12px 16px;font-size:1.05rem}
+.result-hero{text-align:center;padding:26px;border-radius:var(--r-l);background:linear-gradient(135deg,#eef1ff,#f7f2ff);border:1px solid #dfe3fb;margin-bottom:18px}
+.result-hero .big-score{font-size:3.4rem;font-weight:700;color:var(--primary-d);line-height:1;direction:ltr}
+.result-hero .big-score small{font-size:1.2rem;color:var(--ink3)}
+.result-stats{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));margin-top:18px}
+.rs{background:var(--card);border-radius:var(--r-m);padding:14px;border:1px solid var(--line);text-align:center}
+.rs b{display:block;font-size:1.4rem;font-weight:700;color:var(--primary-d)}
+.rs.g b{color:var(--green)}
+.rs.r b{color:var(--red)}
+.rs small{color:var(--ink3);font-size:.88rem}
+.weak-list{margin-top:16px}
+.weak-list .wl{display:flex;gap:10px;align-items:center;padding:10px 14px;border-radius:12px;background:var(--gold-l);border:1px solid #f3e2b8;margin-bottom:8px;font-size:1rem}
+
+.review-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));margin-top:16px}
+.rev{background:var(--card);border:1px solid var(--line);border-radius:var(--r-m);padding:14px;box-shadow:var(--shadow-s);border-inline-start:4px solid var(--primary);transition:transform .18s}
+.rev:hover{transform:translateY(-3px);box-shadow:var(--shadow-m)}
+.rev b{display:block;font-size:.98rem;color:var(--primary-d);margin-bottom:4px}
+.rev p{font-size:1rem;color:var(--ink2);margin:0;line-height:1.9}
+
+.trap{border-radius:var(--r-m);padding:16px;margin-bottom:12px;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow-s);border-inline-start:4px solid var(--red)}
+.trap .wrong-t{color:#a3242a;font-weight:700;font-size:1.05rem;margin-bottom:6px;display:flex;gap:8px;align-items:flex-start}
+.trap .right-t{color:#0d6b41;font-weight:700;font-size:1.05rem;display:flex;gap:8px;align-items:flex-start}
+
+.final-hero{text-align:center;padding:30px 16px}
+.final-hero h1{font-size:clamp(1.6rem,5vw,2.4rem);font-weight:700;margin-bottom:8px;background:linear-gradient(120deg,var(--primary-d),var(--violet),#c05cd6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.skill-list{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));margin-top:20px;text-align:start}
+.skill{display:flex;gap:8px;align-items:center;padding:10px 14px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:1.05rem;font-weight:400}
+.skill .tick{color:var(--green);font-weight:700}
+
+.toast{position:fixed;bottom:120px;inset-inline-start:50%;transform:translateX(50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:14px;font-size:1rem;font-weight:700;box-shadow:var(--shadow-l);z-index:200;opacity:0;transition:all .3s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(50%) translateY(0)}
+
+@media(max-width:640px){
+  .opt-grid,.drop-grid,.compare-tri{grid-template-columns:1fr}
+  .card{padding:20px 16px}
+  .hero h1{font-size:1.8rem}
+  .hud .chip{padding:5px 9px;font-size:.9rem}
+  .brand small{display:none}
+  .member-chip{width:54px;height:54px;font-size:1.2rem}
+  .venn-row{grid-template-columns:1fr;grid-template-rows:auto auto auto}
+  .vb{min-height:120px}
+  .vb + .vb{border-inline-start:none;border-top:1.5px solid rgba(91,110,225,.25)}
+  .navbar .step-ind{display:none}
+  .navbar .btn{padding:10px 18px;font-size:1rem;min-height:48px}
+}
+@media(max-width:400px){
+  .hud .chip span.lbl{display:none}
+  .station .st-tx small{display:none}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <div class="logo">∑</div>
+      <div>آزمایشگاه مجموعه‌ها<small>ریاضی پایه نهم، درس اوّل</small></div>
+    </div>
+    <div class="hud">
+      <div class="chip score" id="chipScore"><span class="ico">⭐</span><span class="lbl">امتیاز</span><span class="val num" id="hudScore">0</span></div>
+      <div class="chip streak" id="chipStreak"><span class="ico">🔥</span><span class="lbl">زنجیره</span><span class="val num" id="hudStreak">0</span></div>
+    </div>
+  </div>
+  <div class="credit-bar">
+    <span>تهیه و تدوین: <b>دکتر آرمین برزین</b></span>
+    <span class="sep">|</span>
+    <span>دبیر ریاضی شهرستان دزفول و مدرس کشوری تیمز</span>
+    <span class="sep">|</span>
+    <span>شماره تماس: <b class="num ltr">09166449430</b></span>
+  </div>
+  <div class="prog-line"><i id="progBar"></i></div>
+</header>
+
+<main class="wrap">
+
+<section class="screen active" id="scr-home">
+  <div class="hero">
+    <div class="badge">🧪 محیط یادگیری تعاملی</div>
+    <h1>آزمایشگاه مجموعه‌ها</h1>
+    <div class="sub">ریاضی پایه نهم — مفهوم را ببین، لمس کن، کشف کن</div>
+    <svg class="hero-art" viewBox="0 0 520 280" role="img" aria-label="انیمیشن ورود اعداد به یک مجموعه">
+      <defs>
+        <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b6ee1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient>
+        <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eef1ff"/><stop offset="1" stop-color="#f7f2ff"/></linearGradient>
+      </defs>
+      <ellipse cx="260" cy="150" rx="200" ry="95" fill="url(#g2)" stroke="url(#g1)" stroke-width="4" stroke-dasharray="8 6" opacity=".9">
+        <animate attributeName="stroke-dashoffset" from="0" to="56" dur="3s" repeatCount="indefinite"/>
+      </ellipse>
+      <text x="260" y="42" text-anchor="middle" font-size="18" font-weight="700" fill="#4254c9">مجموعه A</text>
+      <g font-weight="700" font-size="22" fill="#1e2233">
+        <g><circle cx="60" cy="40" r="20" fill="#fff" stroke="#dfe3fb"/><text x="60" y="48" text-anchor="middle">2</text><animateTransform attributeName="transform" type="translate" values="0,0; 150,105; 170,105" dur="4s" repeatCount="indefinite"/></g>
+        <g><circle cx="470" cy="20" r="20" fill="#fff" stroke="#dfe3fb"/><text x="470" y="28" text-anchor="middle">3</text><animateTransform attributeName="transform" type="translate" values="0,0; -150,105; -170,105" dur="4s" begin="1.2s" repeatCount="indefinite"/></g>
+        <g><circle cx="470" cy="250" r="20" fill="#fff" stroke="#dfe3fb"/><text x="470" y="258" text-anchor="middle">5</text><animateTransform attributeName="transform" type="translate" values="0,0; -155,-75; -175,-75" dur="4s" begin="2.4s" repeatCount="indefinite"/></g>
+      </g>
+      <text x="50" y="78" font-weight="700" font-size="20" fill="#4254c9">{2, 3, 5}</text>
+    </svg>
+    <div class="btn-row" style="justify-content:center"><button class="btn lg" id="btnStart">🚀 شروع سفر</button></div>
+  </div>
+  <div class="card">
+    <h2><span class="n">?</span> مجموعه چیست؟</h2>
+    <p>در ریاضیات، <b>مجموعه</b> دسته‌ای از اشیای <b>مشخص</b> و <b>متمایز</b> است که عضویت هر شیء در آن <b>کاملاً معین</b> باشد؛ یعنی برای هر چیز بتوان دقیقاً گفت «عضو است» یا «عضو نیست».</p>
+    <div class="hint">🎯 در این آزمایشگاه، خودت با آزمایش و کشف به این تعریف می‌رسی — نه با حفظ کردن آن.</div>
+  </div>
+</section>
+
+<section class="screen" id="scr-path">
+  <div class="card">
+    <h2><span class="n">1</span> نقشه یادگیری</h2>
+    <p>ایستگاه‌ها را به ترتیب طی کن. هر ایستگاه یک مفهوم را با آزمایش، کشف و تمرین به تو می‌آموزد.</p>
+    <div class="path-grid" id="pathGrid"></div>
+  </div>
+</section>
+
+<section class="screen" id="scr-what">
+  <div class="card">
+    <h2><span class="n">1</span> مجموعه چیست؟</h2>
+    <p>به منظومه شمسی فکر کن. سیارات، یک دسته مشخص و متمایز هستند.</p>
+    <svg class="hero-art" viewBox="0 0 480 220" role="img" aria-label="منظومه شمسی">
+      <defs><radialGradient id="sunG" cx="50%" cy="50%"><stop offset="0" stop-color="#ffe680"/><stop offset="1" stop-color="#f5a623"/></radialGradient></defs>
+      <circle cx="60" cy="110" r="34" fill="url(#sunG)"/>
+      <g stroke="#c9cfec" fill="none" stroke-width="1.5" opacity=".7">
+        <ellipse cx="60" cy="110" rx="80" ry="30"/><ellipse cx="60" cy="110" rx="120" ry="46"/><ellipse cx="60" cy="110" rx="165" ry="64"/><ellipse cx="60" cy="110" rx="215" ry="84"/>
+      </g>
+      <g>
+        <circle cx="140" cy="95" r="7" fill="#a9b7c6"/><text x="140" y="82" text-anchor="middle" fill="#4a5169">زمین</text>
+        <circle cx="180" cy="130" r="9" fill="#e0a45c"/><text x="180" y="118" text-anchor="middle" fill="#4a5169">مریخ</text>
+        <circle cx="260" cy="100" r="14" fill="#d9a066"/><text x="260" y="84" text-anchor="middle" fill="#4a5169">مشتری</text>
+        <circle cx="350" cy="140" r="12" fill="#c8b17a"/><text x="350" y="124" text-anchor="middle" fill="#4a5169">زحل</text>
+      </g>
+    </svg>
+    <div class="teacher"><div class="av">👩‍🏫</div><div class="tx"><b>نکته دبیر</b><span>خورشید و سیارات، اشیای مشخص و متمایزی هستند. برای هر جرم آسمانی می‌توان دقیقاً گفت عضو منظومه شمسی است یا نه.</span></div></div>
+    <p><b>سؤال:</b> آیا «سیارات منظومه شمسی» یک مجموعه تشکیل می‌دهند؟</p>
+    <div class="opt-grid" id="whatOpts">
+      <button class="opt" data-ok="1">✅ بله، دسته‌ای مشخص و متمایز است</button>
+      <button class="opt" data-ok="0">❌ نه، خیلی مبهم است</button>
+    </div>
+    <div class="fb" id="whatFb"></div>
+    <div id="whatNext" style="display:none">
+      <div class="hint">🌍 اعضای این مجموعه: عطارد، زهره، زمین، مریخ، مشتری، زحل، اورانوس، نپتون.</div>
+      <div class="teacher"><div class="av">💡</div><div class="tx"><b>کشف</b><span>یک مجموعه باید «مشخص» (معلوم)، «معین» (یکتا) و «متمایز» (بدون ابهام) باشد. این سه واژه کلیدی را در ایستگاه بعدی می‌کاویم.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="scr-setnot">
+  <div class="card">
+    <h2><span class="n">2</span> مجموعه هست یا نیست؟</h2>
+    <p>کارت‌ها را به دو ناحیه Drag &amp; Drop کن.</p>
+    <div class="pool" id="snPool" data-pool="1"></div>
+    <div class="drop-grid">
+      <div class="dz" data-zone="yes" id="snYes"><h4>✅ مجموعه است</h4><div class="items" data-items="1"></div></div>
+      <div class="dz" data-zone="no" id="snNo"><h4>❌ مجموعه نیست</h4><div class="items" data-items="1"></div></div>
+    </div>
+    <div class="fb" id="snFb"></div>
+    <div class="btn-row"><button class="btn" id="snCheck">بررسی پاسخ</button><button class="btn ghost" id="snReset">شروع دوباره</button></div>
+  </div>
+</section>
+
+<section class="screen" id="scr-lab60">
+  <div class="card">
+    <h2><span class="n">3</span> آزمایشگاه عدد ۶۰</h2>
+    <p>شمارنده‌های طبیعی ۶۰ در پایین فهرست شده‌اند. هر عدد را به دسته درست بکش.</p>
+    <div class="pool" id="lab60Pool" data-pool="1"></div>
+    <div class="drop-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="dz" data-zone="prime" id="zPrime"><h4>شمارنده‌های اول</h4><div class="items" data-items="1"></div></div>
+      <div class="dz" data-zone="comp" id="zComp"><h4>شمارنده‌های مرکب</h4><div class="items" data-items="1"></div></div>
+      <div class="dz" data-zone="neither" id="zNeither"><h4>نه اول و نه مرکب</h4><div class="items" data-items="1"></div></div>
+    </div>
+    <div class="fb" id="lab60Fb"></div>
+    <div class="btn-row"><button class="btn" id="lab60Check">بررسی</button><button class="btn ghost" id="lab60Reset">دوباره</button></div>
+    <div id="lab60Result" style="display:none">
+      <div class="teacher"><div class="av">🔍</div><div class="tx"><b>کشف مهم</b><span>شمارنده‌های اول ۶۰: <span class="num ltr">{2, 3, 5}</span> — مرکب: <span class="num ltr">{4, 6, 10, 12, 15, 20, 30, 60}</span> — و <b>1</b> نه اول و نه مرکب.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="scr-member">
+  <div class="card">
+    <h2><span class="n">4</span> عضو مجموعه</h2>
+    <p>مجموعه <span class="num ltr">A = {2, 3, 5}</span>. روی هر عدد کلیک کن.</p>
+    <div class="member-lab">
+      <button class="member-chip" data-n="2">2</button>
+      <button class="member-chip" data-n="3">3</button>
+      <button class="member-chip" data-n="4">4</button>
+      <button class="member-chip" data-n="5">5</button>
+      <button class="member-chip" data-n="7">7</button>
+    </div>
+    <div class="member-out" id="memberOut">روی یک عدد کلیک کن…</div>
+    <div class="hint">🔑 نماد <b class="ltr">∈</b> یعنی «عضو است» و <b class="ltr">∉</b> یعنی «عضو نیست».<br>مثال: <span class="num ltr">2 ∈ A</span> و <span class="num ltr">4 ∉ A</span>.</div>
+    <div class="teacher"><div class="av">👩‍🏫</div><div class="tx"><b>نکته دبیر</b><span>عضو مجموعه باید دقیقاً مشخص باشد. ۲ عضو A است چون در فهرست آمده؛ ۴ عضو A نیست چون در فهرست نیست.</span></div></div>
+  </div>
+</section>
+
+<section class="screen" id="scr-order">
+  <div class="card">
+    <h2><span class="n">5</span> ترتیب اعضا مهم نیست</h2>
+    <div class="compare-tri">
+      <div class="ct"><div class="sym num">{2, 3, 5}</div><div class="lbl">نمایش اول</div></div>
+      <div class="ct"><div class="sym num">{5, 2, 3}</div><div class="lbl">نمایش دوم</div></div>
+      <div class="ct"><div class="sym num">{3, 5, 2}</div><div class="lbl">نمایش سوم</div></div>
+    </div>
+    <p style="margin-top:16px"><b>سؤال:</b> آیا این‌ها سه مجموعه متفاوت‌اند؟</p>
+    <div class="opt-grid" id="orderOpts">
+      <button class="opt" data-ok="0">❌ بله، متفاوت‌اند</button>
+      <button class="opt" data-ok="1">✅ نه، یک مجموعه‌اند</button>
+    </div>
+    <div class="fb" id="orderFb"></div>
+    <div id="orderNext" style="display:none"><div class="hint">🎯 <b>قانون:</b> <span class="num ltr">{2,3,5} = {5,2,3} = {3,5,2}</span></div></div>
+  </div>
+</section>
+
+<section class="screen" id="scr-repeat">
+  <div class="card">
+    <h2><span class="n">6</span> تکرار عضو مهم نیست</h2>
+    <div class="compare-tri">
+      <div class="ct z"><div class="sym num">{3, 3, 4}</div><div class="lbl">قبل</div></div>
+      <div class="ct"><div class="sym" style="font-size:1.6rem">⬇</div></div>
+      <div class="ct g"><div class="sym num">{3, 4}</div><div class="lbl">بعد</div></div>
+    </div>
+    <div class="btn-row"><button class="btn" id="repeatBtn">▶ نمایش حذف تکرار</button></div>
+    <div class="fb" id="repeatFb"></div>
+    <div class="hint">🔁 <span class="num ltr">{3,3,4}</span> همان <span class="num ltr">{3,4}</span> است.</div>
+  </div>
+</section>
+
+<section class="screen" id="scr-ahmad">
+  <div class="card">
+    <h2><span class="n">7</span> معمای احمد و رضا</h2>
+    <p>معلم گفت: «مجموعه‌ای بنویسید که ۳ شمارنده زوج عدد ۶۰ باشد.»</p>
+    <div class="compare-tri">
+      <div class="ct"><div class="sym num">{4, 6, 10}</div><div class="lbl">جواب احمد</div></div>
+      <div class="ct"><div class="sym num">{6, 10, 12}</div><div class="lbl">جواب رضا</div></div>
+      <div class="ct z"><div class="sym">🤔</div><div class="lbl">چرا فرق دارند؟</div></div>
+    </div>
+    <p style="margin-top:16px"><b>سؤال:</b> مشکل کجاست؟</p>
+    <div class="q-ans" id="ahmadOpts">
+      <button class="opt" data-ok="0">احمد اشتباه محاسبه کرده است.</button>
+      <button class="opt" data-ok="0">رضا اشتباه محاسبه کرده است.</button>
+      <button class="opt" data-ok="1">عبارت «۳ شمارنده زوج ۶۰» مجموعه معین و یکتا را مشخص نمی‌کند.</button>
+      <button class="opt" data-ok="0">هر دو درست گفته‌اند.</button>
+    </div>
+    <div class="fb" id="ahmadFb"></div>
+    <div id="ahmadNext" style="display:none">
+      <div class="hint">🎯 <b>نتیجه:</b> معیار عضویت باید «مشخص و یکتا» باشد.</div>
+      <div class="teacher"><div class="av">👩‍🏫</div><div class="tx"><b>نکته دبیر</b><span>شمارنده‌های زوج ۶۰: ۲، ۴، ۶، ۱۰، ۱۲، ۲۰، ۳۰، ۶۰. «سه‌تا از آن‌ها» کدام سه‌تا؟ ابهام باعث جواب‌های متفاوت می‌شود.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="scr-builder">
+  <div class="card">
+    <h2><span class="n">8</span> خودت مجموعه بساز</h2>
+    <p>اعضای مجموعه را با کاما (,) جدا کن.</p>
+    <div class="builder">
+      <input type="text" id="setInput" placeholder="مثال: 2, 3, 5, 3" aria-label="اعضای مجموعه">
+      <button class="btn" id="buildBtn">بساز</button>
+    </div>
+    <div class="set-display" id="setDisplay">A = { }</div>
+    <div class="set-meta" id="setMeta"></div>
+    <div class="fb" id="buildFb"></div>
+    <div class="hint">💡 تکرار عضو حذف می‌شود، اما ترتیب مهم نیست.</div>
+  </div>
+</section>
+
+<!-- ============ SCREEN 9: VENN (matching reference image) ============ -->
+<section class="screen" id="scr-venn">
+  <div class="card">
+    <h2><span class="n">9</span> نمودار ون</h2>
+    <p>سه ناحیه را می‌بینی. هر عدد را از پایین بکش و در ناحیه درست رها کن. اگر روی ناحیه‌ای کلیک کنی، اولین عدد باقی‌مانده از فهرست، در آن ناحیه قرار می‌گیرد.</p>
+    <p class="num ltr" style="text-align:center;font-weight:700;color:var(--primary-d);font-size:1.15rem">A = {1,2,3,4,5,6} &nbsp;|&nbsp; B = {5,6,7,8}</p>
+
+    <div class="venn-box">
+      <div class="venn-row">
+        <div class="vb vb-a" data-zone="A">
+          <div class="vb-title">A</div>
+          <div class="vb-items" id="vbItemsA"></div>
+        </div>
+        <div class="vb vb-ab" data-zone="AB">
+          <div class="vb-title">A ∩ B</div>
+          <div class="vb-items" id="vbItemsAB"></div>
+        </div>
+        <div class="vb vb-b" data-zone="B">
+          <div class="vb-title">B</div>
+          <div class="vb-items" id="vbItemsB"></div>
+        </div>
+      </div>
+    </div>
+    <div class="venn-hint">👆 عدد را بکش و روی ناحیه رها کن — یا عدد را از فهرست پایین بکش</div>
+
+    <div class="pool" id="vennPool" data-pool="1"></div>
+    <div class="fb" id="vennFb"></div>
+    <div class="btn-row"><button class="btn" id="vennCheck">بررسی</button><button class="btn ghost" id="vennReset">دوباره</button></div>
+  </div>
+</section>
+
+<section class="screen" id="scr-empty">
+  <div class="card">
+    <h2><span class="n">10</span> مجموعه تهی</h2>
+    <p><b>سؤال:</b> کدام‌یک، یک مجموعه ی <b>تهی</b> تعریف می‌کند؟</p>
+    <div class="q-ans" id="emptyOpts">
+      <button class="opt" data-ok="1">عددهای طبیعی بین ۳ و ۴</button>
+      <button class="opt" data-ok="0">عددهای صحیح بین ۱ و ۱-</button>
+      <button class="opt" data-ok="0">عددهای اول و زوج</button>
+      <button class="opt" data-ok="0">هیچ‌کدام</button>
+    </div>
+    <div class="fb" id="emptyFb"></div>
+    <div id="emptyNext" style="display:none">
+      <div class="hint" style="margin-top:18px">🧪 <b>آزمایش کن:</b> عددها را یکی‌یکی حذف کن.</div>
+      <p style="text-align:center;font-weight:700;color:var(--ink2)">مجموعهٔ آزمایشی</p>
+      <div class="empty-vis" id="emptyVis"></div>
+      <div style="text-align:center;margin-top:12px"><button class="btn sm" id="emptyAnim">▶ حذف اعضا</button></div>
+      <div class="empty-badge" id="emptyBadge">∅</div>
+      <div class="hint">🎯 مجموعه‌ای که هیچ عضو ندارد، <b>مجموعه تهی</b> است و با <b>∅</b> یا <span class="num ltr">{}</span> نشان داده می‌شود.</div>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="scr-emptyzero">
+  <div class="card">
+    <h2><span class="n">11</span> تفاوت مهم: ∅ و {0}</h2>
+    <div class="compare-tri">
+      <div class="ct z"><div class="sym">∅</div><div class="lbl">مجموعه تهی</div><div class="cnt">۰ عضو</div></div>
+      <div class="ct z"><div class="sym num">{}</div><div class="lbl">مجموعه تهی</div><div class="cnt">۰ عضو</div></div>
+      <div class="ct g"><div class="sym num">{0}</div><div class="lbl">تک‌عضوی</div><div class="cnt">۱ عضو</div></div>
+    </div>
+    <div class="hint">⚠️ <span class="num ltr">{0}</span> تک‌عضوی است. <span class="num ltr">{}</span> و <span class="num ltr">∅</span> هیچ عضوی ندارند.</div>
+  </div>
+</section>
+
+<section class="screen" id="scr-count">
+  <div class="card">
+    <h2><span class="n">12</span> شمارش اعضا</h2>
+    <p><b>سؤال:</b> کدام گزینه <b>درست</b> است؟</p>
+    <div class="q-ans" id="countOpts">
+      <button class="opt" data-ok="0">مجموعهٔ <span class="num ltr">{2, 4, 8, 2}</span> چهار عضو دارد.</button>
+      <button class="opt" data-ok="1">مجموعهٔ <span class="num ltr">{2, 2, 4, 4, 6}</span> سه عضو دارد.</button>
+      <button class="opt" data-ok="0">مجموعهٔ <span class="num ltr">{0}</span> تهی است.</button>
+      <button class="opt" data-ok="0">مجموعهٔ <span class="num ltr">{}</span> یک عضو دارد.</button>
+    </div>
+    <div class="fb" id="countFb"></div>
+    <div class="teacher"><div class="av">💡</div><div class="tx"><b>نکته مهم</b><span>تکرار در شمارش حذف می‌شود. <span class="num ltr">{2, 2, 4, 4, 6}</span> → ۳ عضو.</span></div></div>
+    <div class="btn-row"><button class="btn sm" id="countNext">مثال بعدی</button></div>
+  </div>
+</section>
+
+<section class="screen" id="scr-book">
+  <div class="card">
+    <h2><span class="n">13</span> مجموعه‌های مهم کتاب</h2>
+    <p>روی هر کارت بزن.</p>
+    <div class="path-grid" id="bookGrid"></div>
+    <div class="set-display" id="bookDisplay" style="display:none"></div>
+  </div>
+</section>
+
+<section class="screen" id="scr-practice">
+  <div class="card">
+    <h2><span class="n">14</span> خودت امتحان کن</h2>
+    <p>سطح را انتخاب کن.</p>
+    <div class="lvl-row" id="lvlRow">
+      <button class="lvl" data-lvl="1"><b>سطح ۱ — کشف</b><small>تشخیص مجموعه و عضو</small></button>
+      <button class="lvl" data-lvl="2"><b>سطح ۲ — تمرین</b><small>شمارش و تهی و تک‌عضوی</small></button>
+      <button class="lvl" data-lvl="3"><b>سطح ۳ — چالش</b><small>ترکیبی و استدلال</small></button>
+      <button class="lvl" data-lvl="4"><b>سطح ۴ — استاد</b><small>چالش نهایی</small></button>
+    </div>
+    <div class="q-box" id="practiceBox" style="display:none">
+      <div class="q-text" id="practiceQ"></div>
+      <div class="q-ans" id="practiceAns"></div>
+      <div class="fb" id="practiceFb"></div>
+      <div class="btn-row"><button class="btn sm" id="practiceNext" style="display:none">سؤال بعدی ➡</button></div>
+    </div>
+    <div class="score-panel" id="practiceScore" style="display:none">
+      <div class="tag">صحیح: <b id="pCorrect">0</b></div>
+      <div class="tag">غلط: <b id="pWrong">0</b></div>
+      <div class="tag">امتیاز سطح: <b id="pScore">0</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="scr-badges">
+  <div class="card">
+    <h2><span class="n">15</span> نشان‌های پیشرفت</h2>
+    <p>🔒 خاکستری = باز نشده &nbsp;|&nbsp; 🏆 رنگی = باز شده</p>
+    <div class="badge-grid" id="badgeGrid"></div>
+  </div>
+</section>
+
+<section class="screen" id="scr-exam">
+  <div class="card">
+    <h2><span class="n">16</span> آزمون نهایی</h2>
+    <p>۱۰ سؤال از کل درس.</p>
+    <div id="examQuestions"></div>
+    <div class="btn-row"><button class="btn" id="examSubmit">ثبت و مشاهده نتیجه</button></div>
+    <div id="examResult" style="display:none"></div>
+  </div>
+</section>
+
+<section class="screen" id="scr-review">
+  <div class="card">
+    <h2><span class="n">17</span> اگر فقط ۲ دقیقه وقت داری...</h2>
+    <div class="review-grid" id="reviewGrid"></div>
+  </div>
+</section>
+
+<section class="screen" id="scr-traps">
+  <div class="card">
+    <h2><span class="n">18</span> دام‌های مجموعه‌ها</h2>
+    <div id="trapList"></div>
+  </div>
+</section>
+
+<section class="screen" id="scr-final">
+  <div class="final-hero">
+    <div style="font-size:3rem">🎉</div>
+    <h1>تو اکنون وارد دنیای مجموعه‌ها شده‌ای!</h1>
+    <p style="color:var(--ink2);margin-top:8px">مهارت‌هایی که به دست آورده‌ای:</p>
+  </div>
+  <div class="card">
+    <div class="skill-list">
+      <div class="skill"><span class="tick">✓</span> تشخیص مجموعه</div>
+      <div class="skill"><span class="tick">✓</span> تشخیص عضو</div>
+      <div class="skill"><span class="tick">✓</span> نمایش مجموعه</div>
+      <div class="skill"><span class="tick">✓</span> شمارش اعضا</div>
+      <div class="skill"><span class="tick">✓</span> نمودار ون</div>
+      <div class="skill"><span class="tick">✓</span> مجموعه تهی</div>
+      <div class="skill"><span class="tick">✓</span> مجموعه تک‌عضوی</div>
+      <div class="skill"><span class="tick">✓</span> تشخیص تکرار</div>
+      <div class="skill"><span class="tick">✓</span> تشخیص ترتیب</div>
+      <div class="skill"><span class="tick">✓</span> حل مسائل مجموعه‌ها</div>
+    </div>
+    <div class="btn-row" style="justify-content:center"><button class="btn lg" id="resetAll">🔄 شروع دوباره از ابتدا</button></div>
+  </div>
+</section>
+
+</main>
+
+<nav class="navbar" id="navbar">
+  <div class="navbar-in">
+    <button class="btn ghost lg" id="navBack" aria-label="مرحله قبل">◀ قبل</button>
+    <span class="step-ind" id="stepInd">خانه</span>
+    <div class="spacer"></div>
+    <button class="btn ghost lg" id="navPath">🗺️ نقشه</button>
+    <button class="btn lg" id="navNext">بعد ▶</button>
+  </div>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const LS_KEY='setlab_v5';
+const defaultState={score:0,streak:0,bestStreak:0,completed:{},badges:{},answers:{},examBest:0,levelStats:{}};
+let S=loadState();
+function loadState(){try{const raw=localStorage.getItem(LS_KEY);if(!raw)return JSON.parse(JSON.stringify(defaultState));const p=JSON.parse(raw);return Object.assign(JSON.parse(JSON.stringify(defaultState)),p);}catch(e){return JSON.parse(JSON.stringify(defaultState));}}
+function saveState(){try{localStorage.setItem(LS_KEY,JSON.stringify(S));}catch(e){}}
+function resetState(){S=JSON.parse(JSON.stringify(defaultState));try{localStorage.removeItem(LS_KEY);}catch(e){}}
+
+const SCREENS=[
+  {id:'scr-home',title:'خانه'},{id:'scr-path',title:'نقشه یادگیری'},
+  {id:'scr-what',title:'مجموعه چیست؟'},{id:'scr-setnot',title:'مجموعه هست یا نیست؟'},
+  {id:'scr-lab60',title:'آزمایشگاه ۶۰'},{id:'scr-member',title:'عضو مجموعه'},
+  {id:'scr-order',title:'ترتیب اعضا'},{id:'scr-repeat',title:'تکرار عضو'},
+  {id:'scr-ahmad',title:'معمای احمد و رضا'},{id:'scr-builder',title:'ساخت مجموعه'},
+  {id:'scr-venn',title:'نمودار ون'},{id:'scr-empty',title:'مجموعه تهی'},
+  {id:'scr-emptyzero',title:'∅ و {0}'},{id:'scr-count',title:'شمارش اعضا'},
+  {id:'scr-book',title:'مجموعه‌های کتاب'},{id:'scr-practice',title:'خودت امتحان کن'},
+  {id:'scr-badges',title:'نشان‌ها'},{id:'scr-exam',title:'آزمون نهایی'},
+  {id:'scr-review',title:'مرور سریع'},{id:'scr-traps',title:'دام‌ها'},{id:'scr-final',title:'پایان'}
+];
+let currentScreen=0;
+function goTo(idx){
+  if(idx<0)idx=0;if(idx>=SCREENS.length)idx=SCREENS.length-1;
+  currentScreen=idx;
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById(SCREENS[idx].id);
+  if(el){el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+  document.getElementById('stepInd').textContent=SCREENS[idx].title;
+  document.getElementById('navBack').disabled=idx===0;
+  document.getElementById('navNext').disabled=idx===SCREENS.length-1;
+  updateProgress();saveState();
+}
+function nextScreen(){goTo(currentScreen+1);}
+function prevScreen(){goTo(currentScreen-1);}
+function updateProgress(){
+  const total=SCREENS.length-1;
+  const done=Object.keys(S.completed).length;
+  document.getElementById('progBar').style.width=Math.min(100,Math.round(done/total*100))+'%';
+  document.getElementById('hudScore').textContent=S.score;
+  document.getElementById('hudStreak').textContent=S.streak;
+}
+function markDone(id){if(!S.completed[id]){S.completed[id]=true;saveState();updateProgress();}}
+
+function bumpChip(id){const el=document.getElementById(id);if(!el)return;el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump');}
+function addScore(n){
+  S.score+=n;
+  if(n>0){S.streak+=1;S.bestStreak=Math.max(S.bestStreak,S.streak);}
+  saveState();updateProgress();bumpChip('chipScore');if(n>0)bumpChip('chipStreak');
+}
+function breakStreak(){S.streak=0;saveState();updateProgress();}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),2200);}
+const BADGES=[
+  {id:'discoverer',ico:'🔎',name:'کاشف مجموعه',desc:'مجموعه چیست را کامل کن'},
+  {id:'hunter',ico:'🎯',name:'شکارچی اعضا',desc:'آزمایشگاه عضو را کامل کن'},
+  {id:'vennmaster',ico:'🔵',name:'استاد نمودار ون',desc:'نمودار ون را کامل کن'},
+  {id:'emptygenius',ico:'∅',name:'نابغه مجموعه تهی',desc:'مجموعه تهی را کامل کن'},
+  {id:'builder',ico:'🛠️',name:'مجموعه‌ساز',desc:'ساخت مجموعه را کامل کن'},
+  {id:'exam',ico:'🏆',name:'فرمانروای مجموعه‌ها',desc:'آزمون نهایی را تمام کن'}
+];
+function grantBadge(id){
+  if(S.badges[id])return;
+  const b=BADGES.find(x=>x.id===id);if(!b)return;
+  S.badges[id]=true;saveState();renderBadges();
+  toast(`${b.ico} نشان «${b.name}» باز شد!`);
+}
+
+function makeDraggable(el,onDrop){
+  let sx=0,sy=0,dragging=false,ghost=null,moved=false;
+  el.style.touchAction='none';
+  el.addEventListener('pointerdown',e=>{
+    if(el.classList.contains('placed'))return;
+    e.preventDefault();dragging=true;moved=false;sx=e.clientX;sy=e.clientY;
+    try{el.setPointerCapture(e.pointerId);}catch(_){}
+    el.classList.add('dragging');
+  });
+  el.addEventListener('pointermove',e=>{
+    if(!dragging)return;
+    const dx=e.clientX-sx,dy=e.clientY-sy;
+    if(Math.abs(dx)>5||Math.abs(dy)>5){
+      moved=true;
+      if(!ghost){ghost=el.cloneNode(true);ghost.style.position='fixed';ghost.style.pointerEvents='none';ghost.style.zIndex='999';ghost.style.opacity='.9';ghost.style.transform='scale(1.06)';document.body.appendChild(ghost);el.style.opacity='.35';}
+      ghost.style.left=(e.clientX-30)+'px';ghost.style.top=(e.clientY-20)+'px';
+      highlightZone(e.clientX,e.clientY);
+    }
+  });
+  el.addEventListener('pointerup',e=>{
+    if(!dragging)return;dragging=false;
+    el.classList.remove('dragging');el.style.opacity='';
+    if(ghost){ghost.remove();ghost=null;}
+    clearZoneHighlight();
+    if(moved&&onDrop)onDrop(el,e.clientX,e.clientY);
+    try{el.releasePointerCapture(e.pointerId);}catch(_){}
+  });
+  el.addEventListener('pointercancel',()=>{
+    dragging=false;el.classList.remove('dragging');el.style.opacity='';
+    if(ghost){ghost.remove();ghost=null;}clearZoneHighlight();
+  });
+}
+function zoneAtPoint(x,y){return document.elementsFromPoint(x,y).find(n=>n.classList&&n.classList.contains('dz'));}
+function vennZoneAtPoint(x,y){return document.elementsFromPoint(x,y).find(n=>n.classList&&n.classList.contains('vb'));}
+function highlightZone(x,y){
+  clearZoneHighlight();
+  const z=zoneAtPoint(x,y);if(z)z.classList.add('over');
+  const vz=vennZoneAtPoint(x,y);if(vz)vz.classList.add('hot');
+}
+function clearZoneHighlight(){
+  document.querySelectorAll('.dz.over').forEach(z=>z.classList.remove('over'));
+  document.querySelectorAll('.vb.hot').forEach(z=>z.classList.remove('hot'));
+}
+function moveToZone(dragEl,zone){
+  if(!zone)return;const items=zone.querySelector('[data-items]');if(!items)return;
+  items.appendChild(dragEl);dragEl.classList.add('placed');dragEl.classList.remove('correct','wrong');
+}
+
+// 1. What
+(function(){
+  const opts=document.querySelectorAll('#whatOpts .opt');
+  const fb=document.getElementById('whatFb');
+  const next=document.getElementById('whatNext');
+  opts.forEach(o=>o.addEventListener('click',()=>{
+    if(o.dataset.answered)return;opts.forEach(x=>x.dataset.answered='1');
+    const ok=o.dataset.ok==='1';
+    o.classList.add(ok?'correct':'wrong');
+    opts.forEach(x=>{if(x.dataset.ok==='1')x.classList.add('reveal');});
+    fb.className='fb show '+(ok?'ok':'no');
+    fb.innerHTML=ok?'<b>✅ آفرین!</b> سیارات یک دسته مشخص و متمایزند.':'<b>🤔 دوباره فکر کن…</b>';
+    if(ok){addScore(10);markDone('scr-what');grantBadge('discoverer');}else breakStreak();
+    next.style.display='block';
+  }));
+})();
+
+// 2. Set or not
+const SET_NOT_ITEMS=[
+  {id:'digits',label:'عددهای طبیعی یک‌رقمی',answer:'yes'},
+  {id:'poets',label:'چهار شاعر ایرانی',answer:'no'},
+  {id:'primes12',label:'دو عدد اول کوچک‌تر از ۱۲',answer:'no'},
+  {id:'fruits',label:'چهار میوه خوشمزه',answer:'no'},
+  {id:'big5',label:'عددهای طبیعی بزرگ‌تر از ۵',answer:'no'},
+  {id:'athletes',label:'چند ورزشکار خوب',answer:'no'}
+];
+function buildSetNot(){
+  const pool=document.getElementById('snPool');const fb=document.getElementById('snFb');
+  pool.innerHTML='';document.querySelectorAll('#scr-setnot [data-items]').forEach(i=>i.innerHTML='');
+  fb.className='fb';fb.textContent='';
+  SET_NOT_ITEMS.slice().sort(()=>Math.random()-.5).forEach(it=>{
+    const d=document.createElement('div');d.className='drag';d.textContent=it.label;
+    d.dataset.answer=it.answer;d.dataset.id=it.id;pool.appendChild(d);
+    makeDraggable(d,(el,x,y)=>{const z=zoneAtPoint(x,y);if(z)moveToZone(el,z);});
+    d.addEventListener('dblclick',()=>{pool.appendChild(d);d.classList.remove('placed','correct','wrong');});
+  });
+}
+(function(){
+  buildSetNot();
+  document.getElementById('snCheck').addEventListener('click',()=>{
+    const fb=document.getElementById('snFb');let correct=0,total=0;
+    document.querySelectorAll('#scr-setnot .dz').forEach(z=>{
+      const zone=z.dataset.zone;
+      z.querySelectorAll('.drag').forEach(d=>{
+        total++;d.classList.remove('correct','wrong');
+        if(d.dataset.answer===zone){d.classList.add('correct');correct++;}else d.classList.add('wrong');
+      });
+    });
+    if(total<SET_NOT_ITEMS.length){fb.className='fb no show';fb.innerHTML='<b>⏳ هنوز همه کارت‌ها را دسته‌بندی نکردی.</b>';return;}
+    if(correct===total){fb.className='fb ok show';fb.innerHTML='<b>🎉 عالی!</b>';addScore(15);markDone('scr-setnot');}
+    else{fb.className='fb no show';fb.innerHTML=`<b>${correct} از ${total} درست بود.</b>`;breakStreak();}
+  });
+  document.getElementById('snReset').addEventListener('click',buildSetNot);
+})();
+
+// 3. 60 Lab
+const DIV60=[1,2,3,4,5,6,10,12,15,20,30,60];
+const DIV60_ANSWER={1:'neither',2:'prime',3:'prime',5:'prime',4:'comp',6:'comp',10:'comp',12:'comp',15:'comp',20:'comp',30:'comp',60:'comp'};
+function buildLab60(){
+  const pool=document.getElementById('lab60Pool');const fb=document.getElementById('lab60Fb');const result=document.getElementById('lab60Result');
+  pool.innerHTML='';result.style.display='none';fb.className='fb';fb.textContent='';
+  document.querySelectorAll('#scr-lab60 [data-items]').forEach(i=>i.innerHTML='');
+  DIV60.slice().sort(()=>Math.random()-.5).forEach(n=>{
+    const d=document.createElement('div');d.className='drag num';d.textContent=n;d.dataset.n=n;d.dir='ltr';pool.appendChild(d);
+    makeDraggable(d,(el,x,y)=>{const z=zoneAtPoint(x,y);if(z)moveToZone(el,z);});
+    d.addEventListener('dblclick',()=>{pool.appendChild(d);d.classList.remove('placed','correct','wrong');});
+  });
+}
+(function(){
+  buildLab60();
+  document.getElementById('lab60Check').addEventListener('click',()=>{
+    const fb=document.getElementById('lab60Fb');const result=document.getElementById('lab60Result');
+    let correct=0,total=0;
+    document.querySelectorAll('#scr-lab60 .dz').forEach(z=>{
+      const zone=z.dataset.zone;
+      z.querySelectorAll('.drag').forEach(d=>{
+        total++;d.classList.remove('correct','wrong');
+        if(DIV60_ANSWER[d.dataset.n]===zone){d.classList.add('correct');correct++;}else d.classList.add('wrong');
+      });
+    });
+    if(total<DIV60.length){fb.className='fb no show';fb.innerHTML='<b>⏳ هنوز همه شمارنده‌ها را دسته‌بندی نکردی.</b>';return;}
+    if(correct===total){fb.className='fb ok show';fb.innerHTML='<b>🎉 فوق‌العاده!</b>';addScore(20);markDone('scr-lab60');result.style.display='block';}
+    else{fb.className='fb no show';fb.innerHTML=`<b>${correct} از ${total} درست بود.</b>`;breakStreak();}
+  });
+  document.getElementById('lab60Reset').addEventListener('click',buildLab60);
+})();
+
+// 4. Member
+(function(){
+  const A=new Set(['2','3','5']);const out=document.getElementById('memberOut');
+  document.querySelectorAll('#scr-member .member-chip').forEach(ch=>{
+    ch.addEventListener('click',()=>{
+      const n=ch.dataset.n;const isIn=A.has(n);
+      document.querySelectorAll('#scr-member .member-chip').forEach(c=>c.classList.remove('in','out'));
+      ch.classList.add(isIn?'in':'out');
+      out.innerHTML=isIn?`<span class="big num ltr">${n} ∈ A</span> — <b>${n}</b> عضو A است.`:`<span class="big num ltr">${n} ∉ A</span> — <b>${n}</b> عضو A نیست.`;
+      out.classList.remove('flash');void out.offsetWidth;out.classList.add('flash');
+      markDone('scr-member');grantBadge('hunter');
+    });
+  });
+})();
+
+// 5. Order
+(function(){
+  const opts=document.querySelectorAll('#orderOpts .opt');const fb=document.getElementById('orderFb');const next=document.getElementById('orderNext');
+  opts.forEach(o=>o.addEventListener('click',()=>{
+    if(o.dataset.answered)return;opts.forEach(x=>x.dataset.answered='1');
+    const ok=o.dataset.ok==='1';o.classList.add(ok?'correct':'wrong');
+    opts.forEach(x=>{if(x.dataset.ok==='1')x.classList.add('reveal');});
+    fb.className='fb show '+(ok?'ok':'no');
+    fb.innerHTML=ok?'<b>✅ دقیقاً!</b> ترتیب مهم نیست.':'<b>🤔 نه!</b> یک مجموعه‌اند.';
+    if(ok)addScore(10);else breakStreak();
+    next.style.display='block';markDone('scr-order');
+  }));
+})();
+
+// 6. Repeat
+(function(){
+  document.getElementById('repeatBtn').addEventListener('click',()=>{
+    const fb=document.getElementById('repeatFb');fb.className='fb ok show';
+    fb.innerHTML='<b>🔁 دیدی؟</b> <span class="num ltr">{3,3,4}</span> → <span class="num ltr">{3,4}</span>.';
+    addScore(10);markDone('scr-repeat');
+  });
+})();
+
+// 7. Ahmad
+(function(){
+  const opts=document.querySelectorAll('#ahmadOpts .opt');const fb=document.getElementById('ahmadFb');const next=document.getElementById('ahmadNext');
+  opts.forEach(o=>o.addEventListener('click',()=>{
+    if(o.dataset.answered)return;opts.forEach(x=>x.dataset.answered='1');
+    const ok=o.dataset.ok==='1';o.classList.add(ok?'correct':'wrong');
+    opts.forEach(x=>{if(x.dataset.ok==='1')x.classList.add('reveal');});
+    fb.className='fb show '+(ok?'ok':'no');
+    fb.innerHTML=ok?'<b>🎯 درست!</b> معیار یکتا ندارد.':'<b>🤔 دقت کن…</b> معیار یکتا نیست.';
+    if(ok)addScore(15);else breakStreak();
+    next.style.display='block';markDone('scr-ahmad');
+  }));
+})();
+
+// 8. Builder
+(function(){
+  const input=document.getElementById('setInput');const btn=document.getElementById('buildBtn');
+  const disp=document.getElementById('setDisplay');const meta=document.getElementById('setMeta');const fb=document.getElementById('buildFb');
+  function buildSet(){
+    const raw=input.value.trim();
+    if(!raw){fb.className='fb no show';fb.innerHTML='<b>✏️ چیزی وارد کن.</b>';return;}
+    const parts=raw.split(/[,،\s]+/).map(s=>s.trim()).filter(Boolean);
+    const seen=new Set();const unique=[];let dups=0;
+    parts.forEach(p=>{if(seen.has(p))dups++;else{seen.add(p);unique.push(p);}});
+    const isNum=unique.every(u=>!isNaN(Number(u)));
+    const disp2=unique.map(u=>isNum?Number(u).toString():u).join(', ');
+    disp.innerHTML=`<span class="num ltr">A = { ${disp2} }</span>`;
+    disp.classList.remove('updated');void disp.offsetWidth;disp.classList.add('updated');
+    meta.innerHTML='';
+    const t1=document.createElement('span');t1.className='tag';t1.textContent=`تعداد اعضا: ${unique.length}`;meta.appendChild(t1);
+    if(dups>0){const t=document.createElement('span');t.className='tag r';t.textContent=`${dups} تکراری حذف شد`;meta.appendChild(t);}
+    else{const t=document.createElement('span');t.className='tag g';t.textContent='بدون تکرار';meta.appendChild(t);}
+    if(unique.length===0){fb.className='fb ok show';fb.innerHTML='<b>∅</b> مجموعه تهی است.';}
+    else if(unique.length===1){fb.className='fb ok show';fb.innerHTML='<b>✅</b> تک‌عضوی است.';}
+    else{fb.className='fb ok show';fb.innerHTML=`<b>✅</b> مجموعه با ${unique.length} عضو ساخته شد.`;}
+    addScore(5);markDone('scr-builder');grantBadge('builder');
+  }
+  btn.addEventListener('click',buildSet);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter')buildSet();});
+})();
+
+/* ============================================================
+   VENN — three connected panels
+   ============================================================ */
+function initVenn(){
+  const nums=['1','2','3','4','5','6','7','8'];
+  const pool=document.getElementById('vennPool');
+  const fb=document.getElementById('vennFb');
+  const ANS={'1':'A','2':'A','3':'A','4':'A','5':'AB','6':'AB','7':'B','8':'B'};
+  const zoneEls={
+    A:document.getElementById('vbItemsA'),
+    AB:document.getElementById('vbItemsAB'),
+    B:document.getElementById('vbItemsB')
+  };
+  function buildChip(num){
+    const d=document.createElement('div');
+    d.className='drag num';d.textContent=num;d.dataset.n=num;d.dir='ltr';
+    pool.appendChild(d);
+    makeDraggable(d,(el,x,y)=>{
+      const zEl=vennZoneAtPoint(x,y);
+      if(zEl){el.remove();placeChip(el.dataset.n,zEl.dataset.zone);}
+    });
+  }
+  function placeChip(num,zone){
+    const chip=document.createElement('div');
+    chip.className='chip num';chip.textContent=num;chip.dataset.n=num;chip.dir='ltr';
+    chip.title='برای بازگرداندن، کلیک کن';
+    chip.addEventListener('click',()=>{chip.remove();buildChip(num);});
+    zoneEls[zone].appendChild(chip);
+  }
+  function build(){
+    pool.innerHTML='';
+    Object.values(zoneEls).forEach(z=>z.innerHTML='');
+    fb.className='fb';fb.textContent='';
+    nums.slice().sort(()=>Math.random()-.5).forEach(n=>buildChip(n));
+  }
+  document.querySelectorAll('#scr-venn .vb').forEach(z=>{
+    z.addEventListener('click',e=>{
+      if(e.target.classList&&e.target.classList.contains('chip'))return;
+      const firstPool=pool.querySelector('.drag');
+      if(firstPool){firstPool.remove();placeChip(firstPool.dataset.n,z.dataset.zone);}
+    });
+  });
+  document.getElementById('vennCheck').addEventListener('click',()=>{
+    const chips=document.querySelectorAll('#scr-venn .chip');
+    if(chips.length<8){fb.className='fb no show';fb.innerHTML='<b>⏳ هنوز همه اعداد را جای‌گذاری نکردی.</b>';return;}
+    let correct=0;
+    chips.forEach(c=>{
+      const zone=c.closest('.vb').dataset.zone;
+      if(ANS[c.dataset.n]===zone)correct++;
+    });
+    if(correct===8){fb.className='fb ok show';fb.innerHTML='<b>🎉 عالی!</b> <span class="num ltr">A∩B = {5,6}</span>';addScore(20);markDone('scr-venn');grantBadge('vennmaster');}
+    else{fb.className='fb no show';fb.innerHTML=`<b>${correct} از ۸ درست بود.</b> اعداد ۵ و ۶ در اشتراک قرار می‌گیرند.`;breakStreak();}
+  });
+  document.getElementById('vennReset').addEventListener('click',build);
+  build();
+}
+initVenn();
+
+// 10. Empty
+function initEmpty(){
+  const opts=document.querySelectorAll('#emptyOpts .opt');const fb=document.getElementById('emptyFb');
+  const next=document.getElementById('emptyNext');const vis=document.getElementById('emptyVis');
+  const badge=document.getElementById('emptyBadge');const anim=document.getElementById('emptyAnim');
+  opts.forEach(o=>o.addEventListener('click',()=>{
+    if(o.dataset.answered)return;opts.forEach(x=>x.dataset.answered='1');
+    const ok=o.dataset.ok==='1';o.classList.add(ok?'correct':'wrong');
+    opts.forEach(x=>{if(x.dataset.ok==='1')x.classList.add('reveal');});
+    fb.className='fb show '+(ok?'ok':'no');
+    fb.innerHTML=ok?'<b>✅ درسته!</b> بین ۳ و ۴ هیچ عدد طبیعی نیست → تهی.':'<b>🤔 دوباره فکر کن…</b>';
+    if(ok){addScore(15);markDone('scr-empty');grantBadge('emptygenius');}else breakStreak();
+    next.style.display='block';
+  }));
+  ['۲','۳'].forEach(t=>{const d=document.createElement('div');d.className='ev-item num';d.textContent=t;d.dir='ltr';vis.appendChild(d);});
+  anim.addEventListener('click',()=>{
+    const items=vis.querySelectorAll('.ev-item:not(.gone)');
+    if(items.length===0){
+      vis.innerHTML='';['۲','۳'].forEach(t=>{const d=document.createElement('div');d.className='ev-item num';d.textContent=t;d.dir='ltr';vis.appendChild(d);});
+      badge.classList.remove('lit');anim.textContent='▶ حذف اعضا';return;
+    }
+    items.forEach((el,i)=>{setTimeout(()=>{el.classList.add('gone');},i*250);});
+    setTimeout(()=>{badge.classList.add('lit');anim.textContent='🔄 دوباره';},items.length*250+200);
+  });
+}
+initEmpty();
+
+// 12. Count
+(function(){
+  const opts=document.querySelectorAll('#countOpts .opt');const fb=document.getElementById('countFb');
+  opts.forEach(o=>o.addEventListener('click',()=>{
+    if(o.dataset.answered)return;opts.forEach(x=>x.dataset.answered='1');
+    const ok=o.dataset.ok==='1';o.classList.add(ok?'correct':'wrong');
+    opts.forEach(x=>{if(x.dataset.ok==='1')x.classList.add('reveal');});
+    fb.className='fb show '+(ok?'ok':'no');
+    if(ok){fb.innerHTML='<b>✅ درسته!</b> <span class="num ltr">{2,2,4,4,6}</span> → ۳ عضو.';addScore(10);}
+    else{fb.innerHTML='<b>🤔 دقت کن…</b>';breakStreak();}
+    markDone('scr-count');
+  }));
+  document.getElementById('countNext').addEventListener('click',()=>{
+    fb.className='fb ok show';
+    fb.innerHTML='<b>مثال:</b> <span class="num ltr">{7,7,7}</span> → ۱ عضو.';
+  });
+})();
+
+// 13. Book
+const BOOK_SETS=[
+  {t:'عددهای طبیعی یک‌رقمی',s:'{1,2,3,4,5,6,7,8,9}',n:'۹ عضو'},
+  {t:'عددهای اول یک‌رقمی',s:'{2,3,5,7}',n:'۴ عضو'},
+  {t:'مضرب‌های طبیعی ۴',s:'{4,8,12,16,...}',n:'بی‌شمار'},
+  {t:'مضرب‌های اول ۵',s:'{5}',n:'۱ عضو'},
+  {t:'شمارنده‌های ۲۴',s:'{1,2,3,4,6,8,12,24}',n:'۸ عضو'},
+  {t:'عددهای طبیعی بین ۲ و ۱۰',s:'{3,4,5,6,7,8,9}',n:'۷ عضو'},
+  {t:'عددهای صحیح بین ۲ و ۳-',s:'{-2,-1,0,1}',n:'۴ عضو'},
+  {t:'عددهای زوج دورقمی',s:'{10,12,...,98}',n:'۴۵ عضو'},
+  {t:'عددهای اول کوچک‌تر از ۲۰',s:'{2,3,5,7,11,13,17,19}',n:'۸ عضو'},
+  {t:'عددهای صحیح منفی',s:'{-1,-2,-3,...}',n:'بی‌شمار'}
+];
+(function(){
+  const grid=document.getElementById('bookGrid');const disp=document.getElementById('bookDisplay');
+  BOOK_SETS.forEach(b=>{
+    const btn=document.createElement('button');btn.className='station';
+    btn.innerHTML=`<div class="st-ico">📘</div><div class="st-tx"><b>${b.t}</b><small>کلیک کن</small></div>`;
+    btn.addEventListener('click',()=>{
+      disp.style.display='grid';
+      disp.classList.remove('updated');void disp.offsetWidth;disp.classList.add('updated');
+      disp.innerHTML=`<div><div style="font-size:1.4rem" class="num ltr">${b.s}</div><div style="font-size:.9rem;color:var(--ink3);margin-top:6px">${b.n}</div></div>`;
+    });
+    grid.appendChild(btn);
+  });
+})();
+
+// 14. Practice
+const QUIZ_BANK=[
+  {lvl:1,q:'کدام عبارت یک مجموعه مشخص می‌کند؟',a:['چهار میوه خوشمزه','عددهای طبیعی یک‌رقمی','چند شاعر خوب','ماشین‌های زیبا'],ok:1,ex:'معیار کاملاً مشخص و یکتا دارد.'},
+  {lvl:1,q:'اگر <span class="num ltr">A={2,3,5}</span> باشد، کدام درست است؟',a:['<span class="num ltr">4 ∈ A</span>','<span class="num ltr">2 ∈ A</span>','<span class="num ltr">7 ∈ A</span>','<span class="num ltr">1 ∈ A</span>'],ok:1,ex:'۲ در A است.'},
+  {lvl:1,q:'نماد <span class="num ltr">∉</span> چه معنایی دارد؟',a:['عضو است','عضو نیست','مجموعه تهی','زیرمجموعه'],ok:1,ex:'∉ = عضو نیست.'},
+  {lvl:1,q:'کدام مجموعه تهی است؟',a:['<span class="num ltr">{0}</span>','<span class="num ltr">{}</span>','<span class="num ltr">{1}</span>','<span class="num ltr">{∅}</span>'],ok:1,ex:'{} تهی است.'},
+  {lvl:1,q:'<span class="num ltr">{2,3,5}</span> با کدام یکسان است؟',a:['<span class="num ltr">{5,3,2}</span>','<span class="num ltr">{2,3}</span>','<span class="num ltr">{2,3,5,7}</span>','<span class="num ltr">{5,2}</span>'],ok:0,ex:'ترتیب مهم نیست.'},
+  {lvl:2,q:'تعداد اعضای <span class="num ltr">{2,2,4,4,6}</span> چند است؟',a:['۵','۴','۳','۲'],ok:2,ex:'۳ عضو.'},
+  {lvl:2,q:'کدام تک‌عضوی است؟',a:['<span class="num ltr">{}</span>','<span class="num ltr">{0}</span>','<span class="num ltr">{1,2}</span>','<span class="num ltr">∅</span>'],ok:1,ex:'{0} یک عضو دارد.'},
+  {lvl:2,q:'<span class="num ltr">{1,1,1}</span> چند عضو دارد؟',a:['۳','۲','۱','۰'],ok:2,ex:'۱ عضو.'},
+  {lvl:2,q:'آیا <span class="num ltr">{3,3,4} = {3,4}</span>؟',a:['بله','خیر','فقط اگر ترتیب یکی باشد','بستگی دارد'],ok:0,ex:'بله.'},
+  {lvl:2,q:'کدام تهی است؟',a:['عددهای اول زوج','عددهای طبیعی بین ۵ و ۶','شمارنده‌های ۱','<span class="num ltr">{0}</span>'],ok:1,ex:'بین ۵ و ۶ عدد طبیعی نیست.'},
+  {lvl:3,q:'<span class="num ltr">A={1,2,3,4,5,6}</span> و <span class="num ltr">B={5,6,7,8}</span>. <span class="num ltr">A∩B</span>؟',a:['<span class="num ltr">{1,2,3,4}</span>','<span class="num ltr">{5,6}</span>','<span class="num ltr">{7,8}</span>','<span class="num ltr">{1,2,3,4,5,6,7,8}</span>'],ok:1,ex:'۵ و ۶ مشترک‌اند.'},
+  {lvl:3,q:'چرا «چهار عدد خوب» مجموعه نیست؟',a:['چون عدد نیست','چون معیار مبهم است','چون بزرگ است','چون تکراری دارد'],ok:1,ex:'معیار یکتا نیست.'},
+  {lvl:3,q:'شمارنده‌های اول ۶۰؟',a:['<span class="num ltr">{2,3,5}</span>','<span class="num ltr">{4,6,10}</span>','<span class="num ltr">{1,2,3}</span>','<span class="num ltr">{2,4,6}</span>'],ok:0,ex:'۲، ۳، ۵.'},
+  {lvl:3,q:'کدام «معین و یکتا» نیست؟',a:['عددهای اول کمتر از ۱۰','سه شمارنده زوج ۶۰','عددهای طبیعی یک‌رقمی','مضرب‌های اول ۵'],ok:1,ex:'انتخاب‌های متفاوت.'},
+  {lvl:4,q:'<span class="num ltr">A={2,3,4,5}</span> و <span class="num ltr">B={4,5,6,7}</span>. کدام درست؟',a:['<span class="num ltr">2 ∈ B</span>','<span class="num ltr">6 ∈ A</span>','<span class="num ltr">4 ∈ A∩B</span>','<span class="num ltr">7 ∈ A</span>'],ok:2,ex:'۴ در اشتراک است.'},
+  {lvl:4,q:'<span class="num ltr">{2,3,5}</span> و <span class="num ltr">{5,2,3}</span> و <span class="num ltr">{3,5,2}</span>؟',a:['سه مجموعه','یک مجموعه','دو مجموعه','هیچ‌کدام'],ok:1,ex:'یک مجموعه.'},
+  {lvl:4,q:'تفاوت <span class="num ltr">∅</span> و <span class="num ltr">{∅}</span>؟',a:['هیچ تفاوتی','<span class="num ltr">{∅}</span> یک عضو دارد','<span class="num ltr">∅</span> یک عضو دارد','هر دو تک‌عضوی'],ok:1,ex:'{∅} عضو آن ∅ است.'},
+  {lvl:4,q:'کدام همیشه درست است؟',a:['{0} تهی است','∅ یک عضو دارد','{a,a} یک عضو دارد','ترتیب مهم است'],ok:2,ex:'{a,a} = {a}.'}
+];
+let practiceState={lvl:1,q:null,correct:0,wrong:0,score:0,locked:false};
+function pickQuestion(lvl){const pool=QUIZ_BANK.filter(q=>q.lvl===lvl);if(!pool.length)return QUIZ_BANK[0];return pool[Math.floor(Math.random()*pool.length)];}
+function renderPractice(){
+  const box=document.getElementById('practiceBox');const scorePanel=document.getElementById('practiceScore');
+  if(!practiceState.q)return;const q=practiceState.q;
+  document.getElementById('practiceQ').innerHTML=q.q;
+  const ans=document.getElementById('practiceAns');ans.innerHTML='';
+  q.a.forEach((txt,i)=>{
+    const b=document.createElement('button');b.className='opt';b.innerHTML=txt;b.dataset.i=i;
+    b.addEventListener('click',()=>{
+      if(practiceState.locked)return;practiceState.locked=true;
+      ans.querySelectorAll('.opt').forEach(x=>{x.dataset.answered='1';if(+x.dataset.i===q.ok)x.classList.add('reveal');});
+      const fb=document.getElementById('practiceFb');
+      if(i===q.ok){b.classList.add('correct');fb.className='fb ok show';fb.innerHTML='<b>✅ آفرین!</b> '+q.ex;practiceState.correct++;practiceState.score+=10;addScore(10);}
+      else{b.classList.add('wrong');fb.className='fb no show';fb.innerHTML='<b>🤔 نزدیک بود!</b> '+q.ex;practiceState.wrong++;breakStreak();}
+      updatePracticeScore();document.getElementById('practiceNext').style.display='inline-flex';
+    });
+    ans.appendChild(b);
+  });
+  document.getElementById('practiceFb').className='fb';
+  document.getElementById('practiceNext').style.display='none';
+  practiceState.locked=false;box.style.display='block';scorePanel.style.display='flex';
+}
+function updatePracticeScore(){
+  document.getElementById('pCorrect').textContent=practiceState.correct;
+  document.getElementById('pWrong').textContent=practiceState.wrong;
+  document.getElementById('pScore').textContent=practiceState.score;
+}
+(function(){
+  document.querySelectorAll('#lvlRow .lvl').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('#lvlRow .lvl').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');practiceState.lvl=+b.dataset.lvl;
+      practiceState.q=pickQuestion(practiceState.lvl);practiceState.locked=false;renderPractice();
+    });
+  });
+  document.getElementById('practiceNext').addEventListener('click',()=>{
+    practiceState.q=pickQuestion(practiceState.lvl);practiceState.locked=false;renderPractice();
+  });
+})();
+
+// 15. Badges
+function renderBadges(){
+  const grid=document.getElementById('badgeGrid');if(!grid)return;grid.innerHTML='';
+  BADGES.forEach(b=>{
+    const d=document.createElement('div');d.className='bdg'+(S.badges[b.id]?' on':'');
+    d.innerHTML=`<div class="b-ico">${b.ico}</div><b>${b.name}</b><small>${b.desc}</small>`;
+    grid.appendChild(d);
+  });
+}
+
+// 16. Exam
+const EXAM_QUESTIONS=[
+  {q:'مجموعه چیست؟',a:['هر دسته از اشیا','دسته‌ای از اشیای مشخص، متمایز و معین','فهرست اعداد','هر عبارت ریاضی'],ok:1},
+  {q:'نماد <span class="num ltr">∈</span>؟',a:['عضو نیست','عضو است','مجموعه تهی','مساوی است'],ok:1},
+  {q:'<span class="num ltr">{2,3,3,5}</span> چند عضو دارد؟',a:['۴','۳','۲','۵'],ok:1},
+  {q:'کدام تهی است؟',a:['<span class="num ltr">{0}</span>','<span class="num ltr">{}</span>','<span class="num ltr">{1}</span>','<span class="num ltr">{∅}</span>'],ok:1},
+  {q:'<span class="num ltr">{1,2,3}</span> و <span class="num ltr">{3,2,1}</span> …',a:['متفاوت‌اند','یکسان‌اند','هیچ‌کدام مجموعه نیستند','تهی‌اند'],ok:1},
+  {q:'<span class="num ltr">{5}</span> چه نوع مجموعه‌ای است؟',a:['تهی','تک‌عضوی','دوعضوی','نامتناهی'],ok:1},
+  {q:'اعداد مشترک در نمودار ون کجا؟',a:['فقط در A','فقط در B','در ناحیه اشتراک','بیرون هر دو'],ok:2},
+  {q:'تعداد اعضای <span class="num ltr">{2,4,6,8}</span>؟',a:['۳','۴','۵','۸'],ok:1},
+  {q:'چرا «چهار شاعر خوب» مجموعه نیست؟',a:['چون شاعر نیست','چون معیار یکتا و مشخص نیست','چون عدد ندارد','چون کم است'],ok:1},
+  {q:'<span class="num ltr">A={1,2,3,4,5,6}</span> و <span class="num ltr">B={5,6,7,8}</span>. <span class="num ltr">A∩B</span>؟',a:['<span class="num ltr">{5,6}</span>','<span class="num ltr">{1,2,3,4}</span>','<span class="num ltr">{7,8}</span>','<span class="num ltr">{1,2,3,4,5,6,7,8}</span>'],ok:0}
+];
+function buildExam(){
+  const wrap=document.getElementById('examQuestions');wrap.innerHTML='';
+  EXAM_QUESTIONS.forEach((q,i)=>{
+    const d=document.createElement('div');d.className='exam-q';d.style.animationDelay=(i*0.04)+'s';
+    d.innerHTML=`<div class="eq-head"><div class="eq-n num">${i+1}</div><div class="eq-t">${q.q}</div></div>`;
+    const opts=document.createElement('div');opts.className='exam-opts';
+    q.a.forEach((txt,j)=>{
+      const b=document.createElement('button');b.className='opt';b.innerHTML=txt;b.dataset.i=j;
+      b.addEventListener('click',()=>{
+        if(d.dataset.locked)return;d.dataset.locked='1';
+        const ok=j===q.ok;b.classList.add(ok?'correct':'wrong');
+        if(!ok)opts.querySelectorAll('.opt')[q.ok].classList.add('reveal');
+        d.dataset.result=ok?'1':'0';
+      });
+      opts.appendChild(b);
+    });
+    d.appendChild(opts);wrap.appendChild(d);
+  });
+}
+(function(){
+  buildExam();
+  document.getElementById('examSubmit').addEventListener('click',()=>{
+    let correct=0,wrong=0,unanswered=0;const weak=[];
+    document.querySelectorAll('#examQuestions .exam-q').forEach((d,i)=>{
+      const r=d.dataset.result;
+      if(r==='1')correct++;else if(r==='0'){wrong++;weak.push(EXAM_QUESTIONS[i].q);}else unanswered++;
+    });
+    if(unanswered>0)toast(`هنوز ${unanswered} سؤال بی‌پاسخ مانده است.`);
+    const total=EXAM_QUESTIONS.length;const pct=Math.round(correct/total*100);
+    const res=document.getElementById('examResult');res.style.display='block';
+    res.innerHTML=`
+      <div class="result-hero"><div class="big-score">${pct}<small>٪</small></div><div style="color:var(--ink2);font-weight:700;margin-top:6px">${correct} از ${total} درست</div></div>
+      <div class="result-stats"><div class="rs g"><b>${correct}</b><small>صحیح</small></div><div class="rs r"><b>${wrong}</b><small>غلط</small></div><div class="rs"><b>${unanswered}</b><small>بی‌پاسخ</small></div></div>
+      ${weak.length?`<div class="weak-list"><b style="font-size:1rem">پیشنهاد مرور:</b>${weak.map(w=>`<div class="wl">🔁 ${w}</div>`).join('')}</div>`:'<div class="hint" style="margin-top:16px">🎉 عالی!</div>'}
+    `;
+    if(pct>S.examBest){S.examBest=pct;saveState();}
+    if(pct>=70){addScore(30);grantBadge('exam');}
+    markDone('scr-exam');res.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+})();
+
+// 17. Review
+const REVIEW=[
+  {t:'مجموعه چیست؟',d:'دسته‌ای از اشیای مشخص، متمایز و معین.'},
+  {t:'عضو چیست؟',d:'هر شیئی که در مجموعه قرار دارد.'},
+  {t:'∈',d:'نماد «عضو است».'},
+  {t:'∉',d:'نماد «عضو نیست».'},
+  {t:'ترتیب اعضا',d:'مهم نیست. <span class="num ltr">{1,2,3} = {3,2,1}</span>'},
+  {t:'تکرار عضو',d:'مهم نیست. <span class="num ltr">{3,3,4} = {3,4}</span>'},
+  {t:'مجموعه تهی',d:'بدون عضو؛ <span class="num ltr">∅</span> یا <span class="num ltr">{}</span>.'},
+  {t:'تک‌عضوی',d:'یک عضو؛ مثل <span class="num ltr">{0}</span> یا <span class="num ltr">{5}</span>.'},
+  {t:'نمودار ون',d:'نواحی مجزا برای نمایش اعضا و اشتراک.'},
+  {t:'شمارش اعضا',d:'پس از حذف تکرارها.'}
+];
+(function(){
+  const grid=document.getElementById('reviewGrid');
+  REVIEW.forEach(r=>{const d=document.createElement('div');d.className='rev';d.innerHTML=`<b>${r.t}</b><p>${r.d}</p>`;grid.appendChild(d);});
+})();
+
+// 18. Traps
+const TRAPS=[
+  {w:'❌ <span class="num ltr">{2,3,3,4}</span> چهار عضو دارد.',r:'✅ سه عضو دارد.'},
+  {w:'❌ <span class="num ltr">{0}</span> تهی است.',r:'✅ تک‌عضوی است.'},
+  {w:'❌ <span class="num ltr">{1,2,3}</span> و <span class="num ltr">{3,2,1}</span> متفاوت‌اند.',r:'✅ یک مجموعه‌اند.'},
+  {w:'❌ هر عبارت مبهمی یک مجموعه است.',r:'✅ باید مشخص و یکتا باشد.'},
+  {w:'❌ <span class="num ltr">∅</span> و <span class="num ltr">{}</span> متفاوت‌اند.',r:'✅ هر دو تهی‌اند.'},
+  {w:'❌ <span class="num ltr">{∅}</span> تهی است.',r:'✅ تک‌عضوی است.'}
+];
+(function(){
+  const list=document.getElementById('trapList');
+  TRAPS.forEach(t=>{const d=document.createElement('div');d.className='trap';d.innerHTML=`<div class="wrong-t"><span>${t.w}</span></div><div class="right-t"><span>${t.r}</span></div>`;list.appendChild(d);});
+})();
+
+const PATH_STATIONS=[
+  {id:'scr-what',ico:'🌍',t:'مجموعه چیست؟',d:'کشف اولیه با منظومه شمسی'},
+  {id:'scr-setnot',ico:'⚖️',t:'مجموعه یا غیرمجموعه؟',d:'دسته‌بندی عبارات'},
+  {id:'scr-member',ico:'🎯',t:'عضو و عدم عضویت',d:'∈ و ∉ با آزمایش'},
+  {id:'scr-lab60',ico:'🔢',t:'آزمایشگاه ۶۰',d:'شمارنده‌های اول و مرکب'},
+  {id:'scr-order',ico:'🔀',t:'ترتیب اعضا',d:'آیا ترتیب مهم است؟'},
+  {id:'scr-repeat',ico:'🔁',t:'تکرار عضو',d:'حذف تکرارها'},
+  {id:'scr-ahmad',ico:'🤔',t:'معمای احمد و رضا',d:'معین و یکتا بودن'},
+  {id:'scr-builder',ico:'🛠️',t:'ساخت مجموعه',d:'ورودی آزاد'},
+  {id:'scr-venn',ico:'🔵',t:'نمودار ون',d:'عضویت و اشتراک'},
+  {id:'scr-empty',ico:'∅',t:'مجموعه تهی',d:'کشف تهی'},
+  {id:'scr-emptyzero',ico:'0️⃣',t:'∅ و {0}',d:'تفاوت مهم'},
+  {id:'scr-count',ico:'🔢',t:'شمارش اعضا',d:'حذف تکرار'},
+  {id:'scr-book',ico:'📘',t:'مجموعه‌های کتاب',d:'نمونه‌های کلیدی'},
+  {id:'scr-practice',ico:'🎮',t:'خودت امتحان کن',d:'موتور تمرین هوشمند'},
+  {id:'scr-badges',ico:'🏆',t:'نشان‌ها',d:'پیشرفت خود را ببین'},
+  {id:'scr-exam',ico:'📝',t:'آزمون نهایی',d:'۱۰ سؤال جامع'},
+  {id:'scr-review',ico:'⚡',t:'مرور سریع',d:'اگر ۲ دقیقه وقت داری'},
+  {id:'scr-traps',ico:'⚠️',t:'دام‌ها',d:'اشتباهات رایج'},
+  {id:'scr-final',ico:'🎉',t:'پایان',d:'جشن مهارت‌ها'}
+];
+function buildPath(){
+  const grid=document.getElementById('pathGrid');if(!grid)return;grid.innerHTML='';
+  PATH_STATIONS.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.className='station'+(S.completed[s.id]?' done':'');
+    b.innerHTML=`<span class="st-num num">${i+1}</span><span class="check">✓</span><div class="st-ico">${s.ico}</div><div class="st-tx"><b>${s.t}</b><small>${s.d}</small></div>`;
+    b.addEventListener('click',()=>{const idx=SCREENS.findIndex(x=>x.id===s.id);if(idx>=0)goTo(idx);});
+    grid.appendChild(b);
+  });
+}
+buildPath();
+
+document.getElementById('resetAll').addEventListener('click',()=>{
+  if(confirm('همه پیشرفت پاک شود و از ابتدا شروع کنیم؟')){
+    resetState();
+    try{Object.keys(localStorage).forEach(k=>{if(k.indexOf('setlab')===0)localStorage.removeItem(k);});}catch(e){}
+    try{sessionStorage.clear();}catch(e){}
+    toast('شروع دوباره! در حال بازنشانی…');
+    setTimeout(()=>{try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}location.reload();},400);
+  }
+});
+
+document.getElementById('btnStart').addEventListener('click',()=>{goTo(1);});
+document.getElementById('navBack').addEventListener('click',prevScreen);
+document.getElementById('navNext').addEventListener('click',nextScreen);
+document.getElementById('navPath').addEventListener('click',()=>{goTo(1);});
+
+(function(){renderBadges();updateProgress();goTo(0);})();
+</script>
+</body>
+</html>
